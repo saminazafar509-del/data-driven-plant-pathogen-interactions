@@ -1,0 +1,68 @@
+# Plant Pathogen RNA-seq Analysis
+
+## 📌 Project Overview
+This project presents a reproducible RNA-seq data analysis workflow implemented in R to study plant–pathogen interactions and stress-responsive gene expression. The goal is to identify differentially expressed genes and explore molecular mechanisms involved in plant defense under stress conditions.
+
+---
+
+## 🎯 Objectives
+- Analyze RNA-seq gene expression data from plant samples
+- Identify differentially expressed genes (DEGs) under stress vs control conditions
+- Perform basic statistical analysis using R
+- Visualize gene expression patterns
+- Explore potential biological pathways involved in plant defense responses
+
+---
+
+## 📊 Dataset
+- Type: RNA-seq gene expression data
+- Source: Public databases (e.g., NCBI GEO or simulated dataset)
+- Format: Count matrix (genes × samples)
+
+---
+
+## 🛠️ Tools & Technologies
+- R programming language
+- DESeq2 (differential expression analysis)
+- ggplot2 (data visualization)
+- Base R functions for data processing
+
+---
+
+## ⚙️ Workflow
+
+1. Load and preprocess raw gene expression data  
+2. Create DESeq2 dataset object  
+3. Normalize and analyze expression levels  
+4. Perform differential expression analysis  
+5. Visualize results using plots (MA plot, expression graphs)  
+6. Export results for interpretation  
+
+---
+
+## 📈 Example Analysis Steps (R Code Snippet)
+```r
+library(DESeq2)
+library(ggplot2)
+
+# Load data
+data <- read.csv("gene_expression.csv", row.names=1)
+
+# Sample conditions
+condition <- factor(c("control","treated"))
+coldata <- data.frame(row.names=colnames(data), condition)
+
+# Create DESeq dataset
+dds <- DESeqDataSetFromMatrix(countData = data,
+                              colData = coldata,
+                              design = ~ condition)
+
+# Run analysis
+dds <- DESeq(dds)
+res <- results(dds)
+
+# Plot results
+plotMA(res, main="Differential Expression Analysis")
+
+# Save results
+write.csv(as.data.frame(res), "DEG_results.csv")

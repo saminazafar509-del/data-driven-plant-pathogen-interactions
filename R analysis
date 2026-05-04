@@ -1,0 +1,24 @@
+# Load libraries
+library(DESeq2)
+library(ggplot2)
+
+# Load dataset
+data <- read.csv("gene_expression.csv", row.names=1)
+
+# Convert to DESeq format
+condition <- factor(c("control","treated"))
+coldata <- data.frame(row.names=colnames(data), condition)
+
+dds <- DESeqDataSetFromMatrix(countData = data,
+                              colData = coldata,
+                              design = ~ condition)
+
+# Run analysis
+dds <- DESeq(dds)
+res <- results(dds)
+
+# Plot results
+plotMA(res, main="Differential Expression", ylim=c(-2,2))
+
+# Save output
+write.csv(as.data.frame(res), "results.csv")
